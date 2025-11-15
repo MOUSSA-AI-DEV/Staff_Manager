@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Building Manager</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css">
+  
+</head>
+
+<body class="bg-gray-100 h-full">
+
+  <!-- MAIN CONTAINER -->
+  <div class="flex flex-col lg:flex-row h-screen">
+
+    <!-- LEFT: UNASSIGNED STAFF -->
+    <aside class="w-full lg:w-1/4 bg-white shadow-xl p-5 overflow-y-auto">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">Unassigned Staff</h2>
+        <button id="btn-open-modal" class="bg-blue-600 text-white px-3 py-1.5 rounded shadow hover:bg-blue-700 transition">
+          <i class="ri-add-line text-lg"></i> Add
+        </button>
+      </div>
+
+      <!-- SEARCH -->
+      <input id="searchStaff" 
+             placeholder="Search by name or role..." 
+             class="w-full mb-4 p-2 rounded border" />
+
+      <!-- STAFF LIST -->
+      <div id="unassignedList" class="space-y-3">
+        <!-- implementer par js -->
+      </div>
+    </aside>
+
+    <!-- RIGHT: FLOOR PLAN GRID -->
+    <main class="flex-1 p-6 overflow-y-auto">
+
+      <h1 class="text-2xl font-bold mb-5">Building Floor Plan</h1>
+
+      <div class="grid gap-5
+                  xl:grid-cols-3 
+                  lg:grid-cols-2
+                  md:grid-cols-2
+                  sm:grid-cols-1">
+
+        <!-- ZONE TEMPLATE (copy per zone) -->
+        <div class="zone p-4 bg-white rounded-lg shadow " data-zone="conference">
+          <div class="flex justify-between items-center">
+            <h3 class="font-bold text-lg">Conference Room</h3>
+            <button class="btn-add-zone bg-green-600 text-white p-1 rounded-full hover:bg-green-700 fade">
+              <i class="ri-add-line text-xl"></i>
+            </button>
+          </div>
+
+          <div class="mt-3 space-y-2 min-h-[80px]" data-zone-list>
+            <!-- employees appear here -->
+          </div>
+        </div>
+
+        <div class="zone p-4 bg-white rounded-lg shadow " data-zone="reception">
+          <div class="flex justify-between items-center">
+            <h3 class="font-bold text-lg">Reception</h3>
+            <button class="btn-add-zone bg-green-600 text-white p-1 rounded-full hover:bg-green-700 fade">
+              <i class="ri-add-line text-xl"></i>
+            </button>
+          </div>
+          <div class="mt-3 space-y-2 min-h-[80px]" data-zone-list>
+            <!-- the emp -->
+          </div>
+        </div>
+
+        <div class="zone p-4 bg-white rounded-lg shadow " data-zone="server">
+          <div class="flex justify-between items-center">
+            <h3 class="font-bold text-lg">Server Room</h3>
+            <button class="btn-add-zone bg-green-600 text-white p-1 rounded-full hover:bg-green-700 fade">
+              <i class="ri-add-line text-xl"></i>
+            </button>
+          </div>
+          <div class="mt-3 space-y-2 min-h-[80px]" data-zone-list>
+            <!-- the emp -->
+          </div>
+        </div>
+
+        <div class="zone p-4 bg-white rounded-lg shadow" data-zone="security">
+          <div class="flex justify-between items-center">
+            <h3 class="font-bold text-lg">Security Room</h3>
+            <button class="btn-add-zone bg-green-600 text-white p-1 rounded-full hover:bg-green-700 fade">
+              <i class="ri-add-line text-xl"></i>
+            </button>
+          </div>
+          <div class="mt-3 space-y-2 min-h-[80px]" data-zone-list>
+            <!-- the emp -->
+          </div>
+        </div>
+
+        <div class="zone p-4 bg-white rounded-lg shadow " data-zone="staff">
+          <div class="flex justify-between items-center">
+            <h3 class="font-bold text-lg">Staff Room</h3>
+            <button class="btn-add-zone bg-green-600 text-white p-1 rounded-full hover:bg-green-700 fade">
+              <i class="ri-add-line text-xl"></i>
+            </button>
+          </div>
+          <div class="mt-3 space-y-2 min-h-[80px]" data-zone-list>
+            <!-- the emp -->
+          </div>
+        </div>
+
+        <div class="zone p-4 bg-white rounded-lg shadow " data-zone="archives">
+          <div class="flex justify-between items-center">
+            <h3 class="font-bold text-lg">Archive Room</h3>
+            <button class="btn-add-zone bg-green-600 text-white p-1 rounded-full hover:bg-green-700 fade">
+              <i class="ri-add-line text-xl"></i>
+            </button>
+          </div>
+          <div class="mt-3 space-y-2 min-h-[80px]" data-zone-list>
+            <!-- the emp -->
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- MODAL ADD EMPLOYEE -->
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex justify-center items-center p-4 ">
+    <div class="bg-white w-full max-w-lg p-6 rounded-lg shadow-lg">
+      <h2 class="text-xl font-bold mb-4">Add Employee</h2>
+
+      <div class="space-y-3">
+        <input id="empName" class="w-full p-2 border rounded" placeholder="Full Name">
+        
+        <select id="empRole" class="w-full p-2 border rounded">
+          <option>Receptionist</option>
+          <option>IT Technician</option>
+          <option>Security Agent</option>
+          <option>Manager</option>
+          <option>Cleaning Staff</option>
+          <option>Other</option>
+        </select>
+
+        <input id="empEmail" class="w-full p-2 border rounded" placeholder="Email">
+        <input id="empPhone" class="w-full p-2 border rounded" placeholder="Phone">
+
+        <!-- EXPERIENCE LIST -->
+        <div>
+          <label class="font-semibold">Experiences</label>
+          <div id="expList" class="space-y-2"></div>
+          <button id="addExp" class="mt-2 text-blue-600 hover:underline">+ Add experience</button>
+        </div>
+
+        <!-- PHOTO UPLOAD -->
+        <div class="flex items-center gap-3">
+          <img id="previewImg" class="w-16 h-16 rounded-full object-cover border" 
+               src="https://via.placeholder.com/80" alt="Preview" />
+
+          <input type="file" id="empPhoto" accept="image/*" class="block" />
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 mt-5">
+        <button id="closeModal" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
+        <button id="saveEmployee" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT FILE -->
+  <script src="/asstes/js/app.js"></script>
+
+</body>
+</html>
