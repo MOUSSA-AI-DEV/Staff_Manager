@@ -45,22 +45,25 @@ let Employee = {}
             console.log([el.value])
             if(el.value.trim()!=""){
                 Employee[el.id]=el.value
-               console.log(el.id,el.value)
                isValid=true
             }
             else{
                 alert(`  ${ el.id } not implement yet` )
                 isValid=false
             }
-            console.log(Employee)
+        
         })
        if(isValid){
         STAFF.push(Employee)
         console.log(STAFF)
+        localStorage.setItem("STAFF", JSON.stringify(STAFF));
         inputs.forEach(element => {
             element.value = ""
         });
-}
-       
+        }
+        let localStaff = JSON.parse(localStorage.getItem("STAFF"))
+        console.log("localstorage")
+        console.log(localStaff)    
     }
+    
 )
