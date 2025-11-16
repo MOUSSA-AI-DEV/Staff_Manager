@@ -83,11 +83,22 @@ addExp.addEventListener("click",(e)=>{
     Employee["arrayexpList"] = [...arrayexpList]; 
 
     const span = document.createElement("span");
+    span.id=el
     span.className = "rounded-md border border-gray-300 bg-gray-300 w-auto inline-block p-2";
     span.textContent = el;
     expList.appendChild(span);
      
     expInput.value = "";
 
+})
+expList.addEventListener("click",(e)=>{
+    const value = e.target.textContent;
+
+    const index = arrayexpList.indexOf(value);
+    if (index > -1) arrayexpList.splice(index, 1);
+
+    Employee["arrayexpList"] = [...arrayexpList];
+    e.target.remove()
+    e.stopPropagation()
 })
 
