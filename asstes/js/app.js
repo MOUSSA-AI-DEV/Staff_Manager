@@ -20,9 +20,9 @@ let addExp = document.getElementById("addExp")
 let expList = document.getElementById("expList")
 let expInput = document.getElementById("expInput");
 
+    // afficher staff dans la bare 
 
-
-
+let unassignedList = document.getElementById("unassignedList")
 
 
 
@@ -62,43 +62,77 @@ saveEmployee.addEventListener("click", (e) => {
         STAFF.push(Employee)
         console.log(STAFF)
         localStorage.setItem("STAFF", JSON.stringify(STAFF));
+
         inputs.forEach(element => {
             if (element.id !== "empRole")
                 element.value = ""
         });
     }
+
     let localStaff = JSON.parse(localStorage.getItem("STAFF"))
+    // afficher les element dans unassignedList
+    
+localStaff.map((elA)=>{
+    unassignedList.innerHTML = `<div class="grid grid-cols-4 w-full  bg-white rounded-xl shadow-lg p-2 flex flex-col items-center h-30">
+  
+  <img src="${elA.empPhoto}"
+       alt="Image"
+       class=" border bg-black w-12 h-19 rounded-full object-cover mb-2">
+  <div class="">
+  <h3 class="text-sm font-bold  ">${elA.empName} </h3>
+  <h5 class="text-sm m-2">${elA.empRole}</h5>
+  </div>
+  <div class="flex gap-3 mx-2 ">
+    <button class="px-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+      Edit
+    </button>
+    <button class="px-2  bg-red-600 text-white rounded-md hover:bg-red-700">
+      Delete
+    </button>
+  </div>
+
+</div>`
+
+})
     console.log("localstorage")
     console.log(localStaff)
 }
 
 )
-// add to exp list 
-const arrayexpList = []
+// add to exp list
+let companyName = document.getElementById("companyName")
+let role = document.getElementById("role") 
+let fromDate = document.getElementById("fromDate")
+let toDate = document.getElementById("toDate")
+
+let inputsExp = [companyName, role, fromDate, toDate]
+
+
+
 addExp.addEventListener("click",(e)=>{
- 
-    const el = expInput.value.trim(); 
-    if (el === "") return;
-    arrayexpList.push(el);
-    Employee["arrayexpList"] = [...arrayexpList]; 
-
-    const span = document.createElement("span");
-    span.id=el
-    span.className = "rounded-md border border-gray-300 bg-gray-300 w-auto inline-block p-2";
-    span.textContent = el;
-    expList.appendChild(span);
+    const arrayexpList = []
+     const experience={}
+     inputsExp.map((el)=>{
+         if (el === "") return;
+         if (el.value.trim()!=""){
+            experience[el.id]=el.value
+            
+         }
+         else{
+            alert(`implementer cette case ${el.id}`)
+         }
+          el.value = "";
+     })
      
-    expInput.value = "";
+    console.log(experience)
+    arrayexpList.push(experience);
+    Employee["arrayexpList"] = [arrayexpList]; 
+    console.log(Employee)
+
+  
+     
+   
 
 })
-expList.addEventListener("click",(e)=>{
-    const value = e.target.textContent;
 
-    const index = arrayexpList.indexOf(value);
-    if (index > -1) arrayexpList.splice(index, 1);
-
-    Employee["arrayexpList"] = [...arrayexpList];
-    e.target.remove()
-    e.stopPropagation()
-})
 
