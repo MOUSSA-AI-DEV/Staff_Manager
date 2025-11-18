@@ -1,7 +1,5 @@
-import { renderStaffList } from "./crud.js";
-let STAFF = JSON.parse(localStorage.getItem("STAFF")) ||[];
+import { renderStaffList, DeleteEmployee, STAFF } from "./crud.js";
 let arrayexpList = [];
-
 
 const addBtn = document.getElementById("btn-open-modal");
 const ModaleEmploye = document.getElementById("modal");
@@ -16,7 +14,6 @@ const empPhoto = document.getElementById("empPhoto");
 
 const inputs = [empName, empRole, empEmail, empPhone, empPhoto];
 
-const unassignedList = document.getElementById("unassignedList");
 
 const companyName = document.getElementById("companyName");
 const role = document.getElementById("role");
@@ -57,8 +54,11 @@ addExp.addEventListener("click", () => {
 
 
 saveEmployee.addEventListener("click", () => {
-
-    let Employee = {};
+    
+    let Employee = {
+        id : new Date().getTime().toString()
+    };
+    console.log("Employee" ,Employee )
     let isValid = true;
 
     for (let el of inputs) {
@@ -85,5 +85,7 @@ saveEmployee.addEventListener("click", () => {
 
     renderStaffList();
 });
+   
 
+renderStaffList();
 
