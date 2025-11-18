@@ -1,138 +1,89 @@
-const STAFF = []
-
-let addBtn = document.getElementById("btn-open-modal")
-let ModaleEmploye = document.getElementById("modal")
-
-
-addBtn.addEventListener("click", (e) => {
-    ModaleEmploye.classList.remove("hidden")
-    console.log(ModaleEmploye)
-})
+import { renderStaffList } from "./crud.js";
+let STAFF = JSON.parse(localStorage.getItem("STAFF")) ||[];
+let arrayexpList = [];
 
 
-let empName = document.getElementById("empName")
-let empRole = document.getElementById("empRole")
-let empEmail = document.getElementById("empEmail")
-let empPhone = document.getElementById("empPhone")
-let empPhoto = document.getElementById("empPhoto")
+const addBtn = document.getElementById("btn-open-modal");
+const ModaleEmploye = document.getElementById("modal");
+const closeModal = document.getElementById("closeModal");
+const saveEmployee = document.getElementById("saveEmployee");
 
-let addExp = document.getElementById("addExp")
-let expList = document.getElementById("expList")
-let expInput = document.getElementById("expInput");
+const empName = document.getElementById("empName");
+const empRole = document.getElementById("empRole");
+const empEmail = document.getElementById("empEmail");
+const empPhone = document.getElementById("empPhone");
+const empPhoto = document.getElementById("empPhoto");
 
-    // afficher staff dans la bare 
+const inputs = [empName, empRole, empEmail, empPhone, empPhoto];
 
-let unassignedList = document.getElementById("unassignedList")
+const unassignedList = document.getElementById("unassignedList");
+
+const companyName = document.getElementById("companyName");
+const role = document.getElementById("role");
+const fromDate = document.getElementById("fromDate");
+const toDate = document.getElementById("toDate");
+
+const inputsExp = [companyName, role, fromDate, toDate];
+const addExp = document.getElementById("addExp");
 
 
+addBtn.addEventListener("click", () => {
+    ModaleEmploye.classList.remove("hidden");
+});
+
+closeModal.addEventListener("click", () => {
+    ModaleEmploye.classList.add("hidden");
+});
 
 
+addExp.addEventListener("click", () => {
 
-let closeModal = document.getElementById("closeModal")
-closeModal.addEventListener("click", (e) => {
-    ModaleEmploye.classList.add("hidden")
+    let experience = {};
 
-})
-let saveEmployee = document.getElementById("saveEmployee")
-
-const inputs = [
-    empName,
-    empRole,
-    empEmail,
-    empPhone,
-    empPhoto
-]
-let Employee = {}
-saveEmployee.addEventListener("click", (e) => {
-    let isValid = false
-    inputs.map((el) => {
-        console.log([el])
-        console.log([el.value])
-        if (el.value.trim() != "") {
-            Employee[el.id] = el.value
-            isValid = true
+    for (let el of inputsExp) {
+        if (el.value.trim() === "") {
+            alert(el.id);
+            return;
         }
-        else {
-            alert(`  ${el.id} not implement yet`)
-            isValid = false
-        }
-
-    })
-    if (isValid) {
-        STAFF.push(Employee)
-        console.log(STAFF)
-        localStorage.setItem("STAFF", JSON.stringify(STAFF));
-
-        inputs.forEach(element => {
-            if (element.id !== "empRole")
-                element.value = ""
-        });
+        experience[el.id] = el.value;
+        el.value = "";
     }
 
-    let localStaff = JSON.parse(localStorage.getItem("STAFF"))
-    // afficher les element dans unassignedList
-    
-localStaff.map((elA)=>{
-    unassignedList.innerHTML = `<div class="grid grid-cols-4 w-full  bg-white rounded-xl shadow-lg p-2 flex flex-col items-center h-30">
-  
-  <img src="${elA.empPhoto}"
-       alt="Image"
-       class=" border bg-black w-12 h-19 rounded-full object-cover mb-2">
-  <div class="">
-  <h3 class="text-sm font-bold  ">${elA.empName} </h3>
-  <h5 class="text-sm m-2">${elA.empRole}</h5>
-  </div>
-  <div class="flex gap-3 mx-2 ">
-    <button class="px-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-      Edit
-    </button>
-    <button class="px-2  bg-red-600 text-white rounded-md hover:bg-red-700">
-      Delete
-    </button>
-  </div>
-
-</div>`
-
-})
-    console.log("localstorage")
-    console.log(localStaff)
-}
-
-)
-// add to exp list
-let companyName = document.getElementById("companyName")
-let role = document.getElementById("role") 
-let fromDate = document.getElementById("fromDate")
-let toDate = document.getElementById("toDate")
-
-let inputsExp = [companyName, role, fromDate, toDate]
-
-
-
-addExp.addEventListener("click",(e)=>{
-    const arrayexpList = []
-     const experience={}
-     inputsExp.map((el)=>{
-         if (el === "") return;
-         if (el.value.trim()!=""){
-            experience[el.id]=el.value
-            
-         }
-         else{
-            alert(`implementer cette case ${el.id}`)
-         }
-          el.value = "";
-     })
-     
-    console.log(experience)
     arrayexpList.push(experience);
-    Employee["arrayexpList"] = [arrayexpList]; 
-    console.log(Employee)
 
-  
-     
-   
+    console.log( experience);
+    console.log( arrayexpList);
+});
 
-})
+
+saveEmployee.addEventListener("click", () => {
+
+    let Employee = {};
+    let isValid = true;
+
+    for (let el of inputs) {
+        if (el.value.trim() === "") {
+            alert(`${el.id} empty`);
+            isValid = false;
+            return;
+        }
+        Employee[el.id] = el.value;
+    }
+    ModaleEmploye.classList.add("hidden");
+    Employee.arrayexpList = [...arrayexpList];
+
+    arrayexpList = [];
+
+    STAFF.push(Employee);
+    localStorage.setItem("STAFF", JSON.stringify(STAFF));
+
+    console.log(Employee);
+
+    inputs.forEach(el => {
+        if (el.id !== "empRole") el.value = "";
+    });
+
+    renderStaffList();
+});
 
 
