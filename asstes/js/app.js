@@ -1,6 +1,8 @@
-import { renderStaffList, DeleteEmployee, STAFF } from "./crud.js";
+import { renderStaffList, DeleteEmployee, STAFF,renderexperince } from "./crud.js";
 
 import {  validationRules, validateField   } from "./validatField.js"
+
+export let arrayexpList = []
 const addBtn = document.getElementById("btn-open-modal");
 const ModaleEmploye = document.getElementById("modal");
 const closeModal = document.getElementById("closeModal");
@@ -24,7 +26,9 @@ const toDate = document.getElementById("toDate");
 const inputsExp = [companyName, role, fromDate, toDate];
 const addExp = document.getElementById("addExp");
 
+const containerExperience = document.getElementById("container-experience")
 
+const unassignedList = document.getElementById("unassignedList");
 
 
 function validateForm() {
@@ -40,7 +44,10 @@ function validateForm() {
 
 inputs.forEach(input => input.addEventListener("input", () => validateField(input.id, input.value.trim())));
 
-//dfvv
+// edit*************
+
+
+
 
 
 
@@ -71,27 +78,31 @@ empPhoto.addEventListener("change", function () {
     reader.readAsDataURL(file);
 });
 
-addExp.addEventListener("click", () => {
+// addExp.addEventListener("click", () => {
 
-    let experience = {};
+//     let experience = {
+//         id: new Date().getTime().toString()
+//     };
 
-    for (let el of inputsExp) {
-        if (el.value.trim() === "") {
-            alert(el.id);
-            return;
-        }
-        experience[el.id] = el.value;
-        el.value = "";
-    }
+//     for (let el of inputsExp) {
+//         if (el.value.trim() === "") {
+//             return;
+//         }
+//         experience[el.id] = el.value;
+//         el.value = "";
+//     }
 
-    arrayexpList.push(experience);
-
-    console.log( experience);
-    console.log( arrayexpList);
-});
+//     arrayexpList.push(experience);
+//     renderexperince(arrayexpList,containerExperience)
+//     console.log( experience);
+//     console.log( arrayexpList);
+// });
 
 
 saveEmployee.addEventListener("click", () => {
+    console.log("jjjjj");
+    console.log(arrayexpList);
+console.log("dfghjk")
     if (!validateForm()) return;
     let Employee = {
         id : new Date().getTime().toString()
@@ -110,7 +121,7 @@ saveEmployee.addEventListener("click", () => {
     ModaleEmploye.classList.add("hidden");
     Employee.empPhoto = empPhotoBase64 || "https://via.placeholder.com/80";
     Employee.arrayexpList = [...arrayexpList];
-
+    containerExperience.innerHTML=""
     arrayexpList = [];
 
     STAFF.push(Employee);
@@ -124,10 +135,9 @@ saveEmployee.addEventListener("click", () => {
     empPhoto.value = "";
     previewImg.src = "https://via.placeholder.com/80";
     empPhotoBase64 = "";
-
-    renderStaffList();
+    let localStaff = JSON.parse(localStorage.getItem("STAFF")) || [];
+    renderStaffList(localStaff, unassignedList);
 });
-   
 
-renderStaffList();
-
+let localStaff = JSON.parse(localStorage.getItem("STAFF")) || [];
+renderStaffList(localStaff, unassignedList);

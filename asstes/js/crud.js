@@ -1,14 +1,16 @@
+import { arrayexpList } from "./app.js";
+
 
 let STAFF = JSON.parse(localStorage.getItem("STAFF")) || [];
-const unassignedList = document.getElementById("unassignedList");
+// const unassignedList = document.getElementById("unassignedList");
 
-function renderStaffList() {
-    let localStaff = JSON.parse(localStorage.getItem("STAFF")) || [];
+function renderStaffList(localStaff,div) {
+    // let localStaff = JSON.parse(localStorage.getItem("STAFF")) || [];
     unassignedList.innerHTML = "";
 
     localStaff.forEach(elA => {
 
-        unassignedList.innerHTML += `
+        div.innerHTML += `
     <div class="card-staff grid grid-cols-4 w-full bg-white rounded-xl shadow-lg p-2 flex flex-col items-center">            
         <img src="${elA.empPhoto}" class="w-12 h-12 rounded-full object-cover mb-2">
                 <div>
@@ -39,101 +41,116 @@ function DeleteEmployee(id, cardElement) {
     if (cardElement) cardElement.remove();
 }
 
-export { renderStaffList, STAFF, DeleteEmployee };// const submit = document.getElementById("form");
 
-// submit.addEventListener("submit" ,addworker);
-// function addworker(e){
-//     e.preventDefault();
-//      if(!validateForm()){
-//                 return; 
-//             }
-//     const name = nameworker.value.trim();
-//     const role =workerrole.value.trim();
-//     const company =companyNameExp.value.trim();
-//     const rolexp = roleExp.value.trim();
-//     const fromdate = startDateExp.value.trim();
-//     const todate = endDateExp.value.trim();
-//     const photourl = imagepreview.src;
+// experience******************=>
 
-//     // if(company === "")//regex and empty
-//     const unassigneddiv = document.createElement("div");
-//     unassigneddiv.className ="flex justify-between items-center bg-green-500 border border-gray-200 p-3 rounded-lg";
-//     unassigneddiv.innerHTML = 
+
+function renderexperince(experience, div) {
+    div.innerHTML = "";
+console.log(experience)
+    experience.forEach(elA => {
+
+        div.innerHTML += `
+    <div class="experience grid grid-cols-4 w-full bg-white rounded-xl shadow-lg p-2 flex flex-col items-center">            
+                <div>
+                    <h3 class="font-bold">${elA.companyName}</h3>
+                    <h5>${elA.role}</h5>
+                </div>
+                <div class="flex gap-3">
+                    <button  id="${elA.id}" class="edit-ex px-2 bg-blue-600 text-white rounded-md">Edit</button>
+<button id="${elA.id}" class="delete-ex px-2 bg-red-600 text-white rounded-md">Delete</button>
+
+      
+                </div>
+            </div>
+        `;
+    });
+
+    document.querySelectorAll(".delete-ex").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault()
+            const card = e.target.closest(".experience");
+            DeleteEmployee(btn.id, card);
+        });
+    });
+    document.querySelectorAll(".edit-ex").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault()
+            editExperience(btn.id);
+            e.stopPropagation()
+        });
+    });
     
-//     <div class="flex items-center gap-4 ">
-//             <img src="${photourl}" 
-//                 class="w-20 h-20 rounded-full object-cover border border-gray-300">
-//         <div>
-//                 <p style ="font-size :30px">${name}</p>
-//                 <p style ="font-size :15px">${role}</p>
-//                 <p style ="font-size :15px">${company}</p>
-//                 <p style ="font-size :15px">${rolexp}</p>
-//                 <p style ="font-size :15px"> from :${fromdate}</p>
-//                 <p style ="font-size :15px"> to :${todate}</p>
-            
-//         </div> 
-//     </div>
-//         <button class="text-red-500 font-bold text-lg">X</button>
-//         ;
-//         unassigneddiv.querySelector("button").addEventListener("click", () => {
-//             unassigneddiv.remove();
-//         });
+}
 
-//     unassignedList.appendChild(unassigneddiv);
-// }
-// //validation regex 
-// //current idea is declare function of validation or add span message to url &input and remove hidden ???
-// const validationRules = {
-//     'name': {
-//         regex: /^[A-Za-z\s]{2,50}$/,
-//         message: "Invalid Name ,name contain only letters and spaces."
-//     },
-//     'urlimage': {
-//         regex: /^(https?://.*.(jpg|jpeg|png|gif|webp))$/i,
-//         message: "Invalid image URL (only .jpg, .jpeg, .png, .gif, .webp)."
-//     }
-// };
+let editID = null;
+function editExperience(id) {
+    editID = id;
 
-// function toggleError(field, show, message = '') {
-//     const errorDisplay = document.getElementById(${field}-error);
-//     const inputField = document.getElementById(field);
+    const exp = arrayexpList.find(e => e.id == id);
 
-//     if (show) {
-//         errorDisplay.textContent = message;
-//         errorDisplay.classList.remove('hidden');
-//         inputField.classList.add('border-red-500');
-//         inputField.classList.remove('border-green-500');
-//     } else {
-//         errorDisplay.classList.add('hidden');
-//         inputField.classList.remove('border-red-500');
-//         inputField.classList.add('border-green-500');
-//     }
-// }
+    document.getElementById("companyName").value = exp.companyName;
+    document.getElementById("role").value = exp.role;
+    document.getElementById("fromDate").value = exp.fromDate;
+    document.getElementById("toDate").value = exp.toDate;
+
+    const btn = document.getElementById("addExp");
+    btn.textContent = "Update experience";
+
+}
 
 
-// function validateField(field, value) {
-//     const rule = validationRules[field];
 
-//     if (rule && !rule.regex.test(value)) {
-//         toggleError(field, true, rule.message);
-//         return false;
-//     } else if (rule) {
-//         toggleError(field, false);
-//         return true;
-//     }
-//     return true;
-// }
+document.getElementById("addExp").addEventListener("click", (e) => {
+    e.preventDefault()
+    console.log("iam in")
+    console.log(arrayexpList)
+
+    const companyName = document.getElementById("companyName").value;
+    const role = document.getElementById("role").value;
+    const fromDate = document.getElementById("fromDate").value;
+    const toDate = document.getElementById("toDate").value;
 
 
-// function validateForm() {
-//     let isValid = true;
+// console.log("moussafddddddddd")
+// console.log(editID)
+//     console.log("moussafddddddddd")
 
-//     for (const field in validationRules) {
-//         const inputField = document.getElementById(field);
-//         if (inputField && !validateField(field, inputField.value)) {
-//             isValid = false;
-//         }
-//     }
+    if (editID){
+        const exp = arrayexpList.find(e => e.id == editID);
 
-//     return isValid;
-// }
+        exp.companyName = companyName;
+        exp.role = role;
+        exp.fromDate = fromDate;
+        exp.toDate = toDate;
+
+        editID = null;
+
+        const btn = document.getElementById("addExp");
+        btn.textContent = " +Add experience";
+      
+    }
+    else {
+        arrayexpList.push({
+            id: Date.now().toString(),
+            companyName,
+            role,
+            fromDate,
+            toDate
+        });
+    }
+
+    document.getElementById("companyName").value = "";
+    document.getElementById("role").value = "";
+    document.getElementById("fromDate").value = "";
+    document.getElementById("toDate").value = "";
+    
+    renderexperince(arrayexpList, document.getElementById("container-experience"));
+    e.stopPropagation()
+}); 
+
+
+
+
+
+export { renderStaffList, STAFF, DeleteEmployee,renderexperince };
