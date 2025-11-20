@@ -1,27 +1,26 @@
-import { arrayexpList } from "./app.js";
+import { arrayexpList,showEmployeeModal } from "./app.js";
 
 
 let STAFF = JSON.parse(localStorage.getItem("STAFF")) || [];
 // const unassignedList = document.getElementById("unassignedList");
 
-function renderStaffList(localStaff,div) {
-    // let localStaff = JSON.parse(localStorage.getItem("STAFF")) || [];
-    unassignedList.innerHTML = "";
+function renderStaffList(localStaff, div) {
+    div.innerHTML = ""; 
 
     localStaff.forEach(elA => {
-
         div.innerHTML += `
-    <div class="card-staff grid grid-cols-4 w-full bg-white rounded-xl shadow-lg p-2 flex flex-col items-center">            
-        <img src="${elA.empPhoto}" class="w-12 h-12 rounded-full object-cover mb-2">
+            <div class="card-staff grid grid-cols-4 w-full bg-white rounded-xl shadow-lg p-2">
+                <img src="${elA.empPhoto}" class="w-12 h-12 rounded-full object-cover">
+
                 <div>
                     <h3 class="font-bold">${elA.empName}</h3>
                     <h5>${elA.empRole}</h5>
                 </div>
-                <div class="flex gap-3">
-                    <button class="px-2 bg-blue-600 text-white rounded-md">Edit</button>
-<button id="${elA.id}" class="delete-btn px-2 bg-red-600 text-white rounded-md">Delete</button>
 
-      
+                <div class="flex gap-3">
+                    <button data-id="${elA.id}" class="view-btn px-2 bg-green-600 text-white rounded-md">View</button>
+                    <button data-id="${elA.id}" class="edit-btn px-2 bg-blue-600 text-white rounded-md">Edit</button>
+                    <button data-id="${elA.id}" class="delete-btn px-2 bg-red-600 text-white rounded-md">Delete</button>
                 </div>
             </div>
         `;
@@ -29,11 +28,22 @@ function renderStaffList(localStaff,div) {
 
     document.querySelectorAll(".delete-btn").forEach(btn => {
         btn.addEventListener("click", (e) => {
+            const id = btn.dataset.id;
             const card = e.target.closest(".card-staff");
-            DeleteEmployee(btn.id, card);
+            DeleteEmployee(id, card);
+        });
+    });
+
+    document.querySelectorAll(".view-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            console.log("hsdhc")
+            const id = btn.dataset.id;
+            const f = localStaff.find(emp => emp.id === id);
+            if (f) showEmployeeModal(f);
         });
     });
 }
+
 
 function DeleteEmployee(id, cardElement) {
     STAFF = STAFF.filter(el => parseInt(el.id) !== parseInt(id));

@@ -1,5 +1,5 @@
 import { renderStaffList, DeleteEmployee, STAFF,renderexperince } from "./crud.js";
-
+// import { renderWorkerModal } from "./affiche_worker.js";
 import {  validationRules, validateField   } from "./validatField.js"
 
 export let arrayexpList = []
@@ -23,8 +23,8 @@ const role = document.getElementById("role");
 const fromDate = document.getElementById("fromDate");
 const toDate = document.getElementById("toDate");
 
-const inputsExp = [companyName, role, fromDate, toDate];
-const addExp = document.getElementById("addExp");
+// const inputsExp = [companyName, role, fromDate, toDate];
+// const addExp = document.getElementById("addExp");
 
 const containerExperience = document.getElementById("container-experience")
 
@@ -78,30 +78,10 @@ empPhoto.addEventListener("change", function () {
     reader.readAsDataURL(file);
 });
 
-// addExp.addEventListener("click", () => {
-
-//     let experience = {
-//         id: new Date().getTime().toString()
-//     };
-
-//     for (let el of inputsExp) {
-//         if (el.value.trim() === "") {
-//             return;
-//         }
-//         experience[el.id] = el.value;
-//         el.value = "";
-//     }
-
-//     arrayexpList.push(experience);
-//     renderexperince(arrayexpList,containerExperience)
-//     console.log( experience);
-//     console.log( arrayexpList);
-// });
-
 
 saveEmployee.addEventListener("click", () => {
     console.log("jjjjj");
-    console.log(arrayexpList);
+  
 console.log("dfghjk")
     if (!validateForm()) return;
     let Employee = {
@@ -139,5 +119,61 @@ console.log("dfghjk")
     renderStaffList(localStaff, unassignedList);
 });
 
+////show function
+
+const modalShow = document.getElementById("modal-show");
+const empNameShow = document.getElementById("empName-show");
+const empRoleShow = document.getElementById("empRole-show");
+const empEmailShow = document.getElementById("empEmail-show");
+const empPhoneShow = document.getElementById("empPhone-show");
+
+const previewImgShow = document.getElementById("previewImg-show");
+const containerExperienceShow = document.getElementById("container-experience-show");
+
+
+// Affichage complet d'un employé
+function showEmployeeModal(employee) {
+
+    modalShow.classList.remove("hidden"); 
+console.log("here  ")
+    empNameShow.value = employee.empName;
+    empRoleShow.value = employee.empRole;
+    empEmailShow.value = employee.empEmail;
+    empPhoneShow.value = employee.empPhone;
+
+    previewImgShow.src = employee.empPhoto || "https://via.placeholder.com/80";
+
+    containerExperienceShow.innerHTML = "";
+
+    if (employee.arrayexpList) {
+        employee.arrayexpList.forEach(exp => {
+            const div = document.createElement("div");
+            div.className = "border p-2 rounded mb-2";
+            div.innerHTML = `
+                <strong>Company:</strong> ${exp.companyName}<br>
+                <strong>Role:</strong> ${exp.role}<br>
+                <strong>From:</strong> ${exp.fromDate}<br>
+                <strong>To:</strong> ${exp.toDate}
+            `;
+            containerExperienceShow.appendChild(div);
+        });
+    } else {
+        containerExperienceShow.innerHTML =
+            `<p class="text-gray-500">No experience available</p>`;
+    }
+    console.log("good by")
+}
+
+
+document.getElementById("closeModal-show")
+    .addEventListener("click", () => {
+        modalShow.classList.add("hidden");
+    });
+
+
+
+
+ 
 let localStaff = JSON.parse(localStorage.getItem("STAFF")) || [];
 renderStaffList(localStaff, unassignedList);
+export {showEmployeeModal}
