@@ -1,6 +1,7 @@
 import { renderStaffList, DeleteEmployee, STAFF,renderexperince } from "./crud.js";
 // import { renderWorkerModal } from "./affiche_worker.js";
 import {  validationRules, validateField   } from "./validatField.js"
+import { assigne, renderRooms } from "./assign_employee.js";
 
 export let arrayexpList = []
 const addBtn = document.getElementById("btn-open-modal");
@@ -176,4 +177,6 @@ document.getElementById("closeModal-show")
  
 let localStaff = JSON.parse(localStorage.getItem("STAFF")) || [];
 renderStaffList(localStaff, unassignedList);
+assigne()
+renderRooms();
 export {showEmployeeModal}
