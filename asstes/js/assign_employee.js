@@ -1,3 +1,5 @@
+
+import { renderStaffList } from "/asstes/js/crud.js";
 export const roomArrays = JSON.parse(localStorage.getItem("ROOMS")) || {
     conference: [],
     reception: [],
@@ -11,13 +13,39 @@ function saveRooms() {
     localStorage.setItem("ROOMS", JSON.stringify(roomArrays));
 }
 
- 
+function updateZoneBackground(zone) {
+    const container = document.querySelector(`[data-zone="${zone}"] [data-zone-list]`);
+    const zoneDiv = container.closest(".zone");
+
+    if (roomArrays[zone].length === 0) {
+        zoneDiv.classList.add("bg-red-200");
+    } else {
+        zoneDiv.classList.remove("bg-red-200");
+    }
+}
 
 const workerPopup = document.getElementById("worker-display-popup-room");
 const workerPreview = document.getElementById("worker-preview");
 const closeWorkerPopup = document.getElementById("close-worker-popup-room");
 
- 
+function canAccessZone(role, zone) {
+    if (role === "Manager") return true;
+    if (zone === "reception") return role === "Receptionist";
+    if (zone === "server") return role === "IT Technician";
+    if (zone === "security") return role === "Security Agent";
+    if (zone === "archives") {
+        if (role === "Cleaning Staff") return false;
+        return role === "Archivist" || role === "Manager";
+    }
+    if (role === "Other") {
+        return !["server", "security", "archives"].includes(zone);
+    }
+    if (role === "Cleaning Staff") {
+        return zone !== "archives";
+    }
+    return false;
+}
+
 function openWorkerPopupForZone(zoneName) {
     workerPreview.innerHTML = "";
     const staff = JSON.parse(localStorage.getItem("STAFF")) || [];
@@ -41,11 +69,9 @@ closeWorkerPopup.addEventListener("click", () => {
     workerPopup.classList.add("hidden");
 });
 
-workerPopup.addEventListener("click", (e) => {
-    if (e.target === workerPopup) workerPopup.classList.add("hidden");
-});
 
-import { renderStaffList } from "/asstes/js/crud.js";
+
+
 
 workerPreview.addEventListener("click", (e) => {
     const card = e.target.closest("[data-id]");
@@ -55,7 +81,12 @@ workerPreview.addEventListener("click", (e) => {
     let staff = JSON.parse(localStorage.getItem("STAFF")) || [];
     const employee = staff.find(emp => emp.id === empId);
 
-     
+    const zoneName = document.querySelector(".zone.active")?.dataset.zone;
+    if (!canAccessZone(employee.empRole, zoneName)) {
+        alert("Cet employé n'a pas accès à cette zone.");
+        return;
+    }
+
     const room = roomArrays[zoneName];
     if (room.length >= 5) {
         alert("Cette salle a déjà 5 employés.");
@@ -88,7 +119,8 @@ function removeEmployeeFromRoom(zone, empId) {
 
     renderStaffList(staff, document.getElementById("unassignedList"));
     renderRooms();
- }
+    updateZoneBackground(zone);
+}
 
 export function renderRooms() {
     Object.keys(roomArrays).forEach(zone => {
@@ -138,7 +170,8 @@ function addEmployeeToRoom(zone, employee) {
     });
 
     container.appendChild(empDiv);
- }
+    updateZoneBackground(zone);
+}
 
 export function assigne() {
     const roomButtons = document.querySelectorAll(".btn-add-zone");

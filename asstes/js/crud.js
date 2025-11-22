@@ -9,7 +9,7 @@ function renderStaffList(localStaff, div) {
 
     localStaff.forEach(elA => {
         div.innerHTML += `
-            <div class="card-staff grid grid-cols-4 w-full bg-white rounded-xl shadow-lg p-2">
+            <div class="card-staff grid grid-cols-3 w-full bg-white rounded-md border p-2">
                 <img src="${elA.empPhoto}" class="w-12 h-12 rounded-full object-cover">
 
                 <div>
@@ -18,9 +18,9 @@ function renderStaffList(localStaff, div) {
                 </div>
 
                 <div class="flex gap-3">
-                    <button data-id="${elA.id}" class="view-btn px-2 bg-green-600 text-white rounded-md">View</button>
-                    <button data-id="${elA.id}" class="edit-btn px-2 bg-blue-600 text-white rounded-md">Edit</button>
-                    <button data-id="${elA.id}" class="delete-btn px-2 bg-red-600 text-white rounded-md">Delete</button>
+                    <button data-id="${elA.id}" class="view-btn px-2 bg-green-800 text-white rounded-md">view</button>
+                    <button data-id="${elA.id}" class="edit-btn px-2 bg-blue-800 text-white rounded-md">edit</button>
+                    <button data-id="${elA.id}" class="delete-btn px-2 bg-red-800 text-white rounded-md">delete</button>
                 </div>
             </div>
         `;
