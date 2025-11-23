@@ -8,7 +8,7 @@ function renderStaffList(localStaff, div) {
 
     localStaff.forEach(elA => {
         div.innerHTML += `
-          <div class="card-staff grid grid-cols-4  w-full bg-white rounded-md border p-2 items-center gap-2">
+          <div class="card-staff grid grid-cols-4  w-full bg-gray-200 rounded-md border p-2 items-center gap-2">
   <div class="flex justify-center">
     <img src="${elA.empPhoto}" class="w-12 h-12 rounded-full object-cover">
   </div>

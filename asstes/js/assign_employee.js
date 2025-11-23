@@ -81,14 +81,14 @@ workeraffichage.addEventListener("click", (e) => {
     const empId = card.dataset.id;
     let staff = JSON.parse(localStorage.getItem("STAFF")) || [];
     const employee = staff.find(emp => emp.id === empId);
-    
+
 // get zone by active class and get the name of data zone
 4
     const zoneName = document.querySelector(".zone.active")?.dataset.zone;
-    if (!canAccessZone(employee.empRole, zoneName)) {
-        alert("Cet employé n'a pas accès à cette zone.");
-        return;
-    }
+    // if (!canAccessZone(employee.empRole, zoneName)) {
+    //     alert("Cet employé n'a pas accès à cette zone.");
+    //     return;
+    // }
 
     const room = roomArrays[zoneName];
     if (room.length >= 5) {
@@ -99,7 +99,9 @@ workeraffichage.addEventListener("click", (e) => {
     room.push(employee);
     saveRooms();
 
-    staff = staff.filter(emp => emp.id !== empId);
+// elimner empl from siz bare
+
+    staff = staff.filter(emp => emp.id !== empId);;
     localStorage.setItem("STAFF", JSON.stringify(staff));
 
     renderStaffList(staff, document.getElementById("unassignedList"));
@@ -112,7 +114,7 @@ function removeEmployeeFromRoom(zone, empId) {
     let staff = JSON.parse(localStorage.getItem("STAFF")) || [];
     const index = roomArrays[zone].findIndex(emp => emp.id === empId);
     if (index === -1) return;
-
+// array iin ,array
     const employee = roomArrays[zone][index];
     roomArrays[zone].splice(index, 1);
     saveRooms();
@@ -127,6 +129,7 @@ function removeEmployeeFromRoom(zone, empId) {
 
 export function renderRooms() {
     Object.keys(roomArrays).forEach(zone => {
+        // container if list
         const container = document.querySelector(`[data-zone="${zone}"] [data-zone-list]`);
         const zoneDiv = container.closest(".zone");
         container.innerHTML = "";
