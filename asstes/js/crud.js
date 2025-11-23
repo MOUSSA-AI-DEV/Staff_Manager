@@ -2,27 +2,29 @@ import { arrayexpList,showEmployeeModal } from "./app.js";
 
 
 let STAFF = JSON.parse(localStorage.getItem("STAFF")) || [];
-// const unassignedList = document.getElementById("unassignedList");
 
 function renderStaffList(localStaff, div) {
     div.innerHTML = ""; 
 
     localStaff.forEach(elA => {
         div.innerHTML += `
-            <div class="card-staff grid grid-cols-3 w-full bg-white rounded-md border p-2">
-                <img src="${elA.empPhoto}" class="w-12 h-12 rounded-full object-cover">
+          <div class="card-staff grid grid-cols-4  w-full bg-white rounded-md border p-2 items-center gap-2">
+  <div class="flex justify-center">
+    <img src="${elA.empPhoto}" class="w-12 h-12 rounded-full object-cover">
+  </div>
 
-                <div>
-                    <h3 class="font-bold">${elA.empName}</h3>
-                    <h5>${elA.empRole}</h5>
-                </div>
+  <div class="">
+    <h3 class="font-bold">${elA.empName}</h3>
+    <h5>${elA.empRole}</h5>
+  </div>
 
-                <div class="flex gap-3">
-                    <button data-id="${elA.id}" class="view-btn px-2 bg-green-800 text-white rounded-md">view</button>
-                    <button data-id="${elA.id}" class="edit-btn px-2 bg-blue-800 text-white rounded-md">edit</button>
-                    <button data-id="${elA.id}" class="delete-btn px-2 bg-red-800 text-white rounded-md">delete</button>
-                </div>
-            </div>
+  <div class="flex justify-center gap-2 ">
+    <button data-id="${elA.id}" class="view-btn px bg-green-800 text-white rounded-md">view</button>
+    <button data-id="${elA.id}" class="edit-btn px-2 bg-blue-800 text-white rounded-md">edit</button>
+    <button data-id="${elA.id}" class="delete-btn px-2 bg-red-800 text-white rounded-md">delete</button>
+  </div>
+</div>
+
         `;
     });
 
@@ -36,10 +38,10 @@ function renderStaffList(localStaff, div) {
 
     document.querySelectorAll(".view-btn").forEach(btn => {
         btn.addEventListener("click", () => {
-            console.log("hsdhc")
+            console.log("view-btn")
             const id = btn.dataset.id;
-            const f = localStaff.find(emp => emp.id === id);
-            if (f) showEmployeeModal(f);
+            const emp = localStaff.find(emp => emp.id === id);
+            if (emp) showEmployeeModal(emp);
         });
     });
 }
@@ -93,9 +95,9 @@ console.log(experience)
     
 }
 
-let editID = null;
+let rpID = null;
 function editExperience(id) {
-    editID = id;
+    rpID = id;
 
     const exp = arrayexpList.find(e => e.id == id);
 
@@ -122,19 +124,16 @@ document.getElementById("addExp").addEventListener("click", (e) => {
     const toDate = document.getElementById("toDate").value;
 
 
-// console.log("moussafddddddddd")
-// console.log(editID)
-//     console.log("moussafddddddddd")
 
-    if (editID){
-        const exp = arrayexpList.find(e => e.id == editID);
+    if (rpID){
+        const exp = arrayexpList.find(e => e.id == rpID);
 
         exp.companyName = companyName;
         exp.role = role;
         exp.fromDate = fromDate;
         exp.toDate = toDate;
 
-        editID = null;
+        rpID = null;
 
         const btn = document.getElementById("addExp");
         btn.textContent = " +Add experience";

@@ -25,19 +25,20 @@ function updateZoneBackground(zone) {
 }
 
 const workerPopup = document.getElementById("worker-display-popup-room");
-const workerPreview = document.getElementById("worker-preview");
-const closeWorkerPopup = document.getElementById("close-worker-popup-room");
+const workeraffichage = document.getElementById("worker-preview");
+const btn_close_affichage = document.getElementById("close-worker-popup-room");
 
 function canAccessZone(role, zone) {
     if (role === "Manager") return true;
-    if (zone === "reception") return role === "Receptionist";
+
     if (zone === "server") return role === "IT Technician";
     if (zone === "security") return role === "Security Agent";
     if (zone === "archives") {
-        if (role === "Cleaning Staff") return false;
+        if (role === "Cleaning Staff") return false;    
         return role === "Archivist" || role === "Manager";
     }
     if (role === "Other") {
+
         return !["server", "security", "archives"].includes(zone);
     }
     if (role === "Cleaning Staff") {
@@ -47,7 +48,7 @@ function canAccessZone(role, zone) {
 }
 
 function openWorkerPopupForZone(zoneName) {
-    workerPreview.innerHTML = "";
+    workeraffichage.innerHTML = "";
     const staff = JSON.parse(localStorage.getItem("STAFF")) || [];
     const filtered = staff.filter(emp => canAccessZone(emp.empRole, zoneName));
 
@@ -59,13 +60,13 @@ function openWorkerPopupForZone(zoneName) {
             <strong>${emp.empName}</strong>
             <p class="text-sm text-gray-600">${emp.empRole}</p>
         `;
-        workerPreview.appendChild(card);
+        workeraffichage.appendChild(card);
     });
 
     workerPopup.classList.remove("hidden");
 }
 
-closeWorkerPopup.addEventListener("click", () => {
+btn_close_affichage.addEventListener("click", () => {
     workerPopup.classList.add("hidden");
 });
 
@@ -73,14 +74,16 @@ closeWorkerPopup.addEventListener("click", () => {
 
 
 
-workerPreview.addEventListener("click", (e) => {
+workeraffichage.addEventListener("click", (e) => {
     const card = e.target.closest("[data-id]");
     if (!card) return;
 
     const empId = card.dataset.id;
     let staff = JSON.parse(localStorage.getItem("STAFF")) || [];
     const employee = staff.find(emp => emp.id === empId);
-
+    
+// get zone by active class and get the name of data zone
+4
     const zoneName = document.querySelector(".zone.active")?.dataset.zone;
     if (!canAccessZone(employee.empRole, zoneName)) {
         alert("Cet employé n'a pas accès à cette zone.");
@@ -89,7 +92,7 @@ workerPreview.addEventListener("click", (e) => {
 
     const room = roomArrays[zoneName];
     if (room.length >= 5) {
-        alert("Cette salle a déjà 5 employés.");
+        alert("Cette a 5 personne.");
         return;
     }
 
@@ -141,7 +144,7 @@ export function renderRooms() {
 
             empDiv.innerHTML = `
                 <span>${emp.empName}</span>
-                <button class="text-red-600 remove-emp-btn">X</button>
+                <button class=" remove-emp-btn">x</button>
             `;
 
             empDiv.querySelector(".remove-emp-btn").addEventListener("click", () => {
@@ -162,7 +165,8 @@ function addEmployeeToRoom(zone, employee) {
 
     empDiv.innerHTML = `
         <span>${employee.empName}</span>
-        <button class="text-red-600 remove-emp-btn">X</button>
+        
+        <button class=" remove-emp-btn">X</button>
     `;
 
     empDiv.querySelector(".remove-emp-btn").addEventListener("click", () => {
@@ -179,7 +183,7 @@ export function assigne() {
     roomButtons.forEach(btn => {
         btn.addEventListener("click", () => {
             const zoneName = btn.closest(".zone").dataset.zone;
-            document.querySelectorAll(".zone").forEach(z => z.classList.remove("active"));
+            document.querySelectorAll(".zone").forEach(zone => zone.classList.remove("active"));
             btn.closest(".zone").classList.add("active");
             openWorkerPopupForZone(zoneName);
         });

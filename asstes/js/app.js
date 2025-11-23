@@ -24,8 +24,6 @@ const role = document.getElementById("role");
 const fromDate = document.getElementById("fromDate");
 const toDate = document.getElementById("toDate");
 
-// const inputsExp = [companyName, role, fromDate, toDate];
-// const addExp = document.getElementById("addExp");
 
 const containerExperience = document.getElementById("container-experience")
 
@@ -37,7 +35,6 @@ function validateForm() {
     for (const field in validationRules) {
         if (field === "empPhoto") continue; 
         const input = document.getElementById(field);
-        if (!input) continue;
         if (!validateField(field, input.value.trim())) isValid = false;
     }
     return isValid;
@@ -89,14 +86,9 @@ console.log("dfghjk")
         id : new Date().getTime().toString()
     };
     console.log("Employee" ,Employee )
-    let isValid = true;
 
     for (let el of inputs) {
-        if (el.value.trim() === "") {
-            alert(`${el.id} empty`);
-            isValid = false;
-            return;
-        }
+       
         Employee[el.id] = el.value;
     }
     ModaleEmploye.classList.add("hidden");
@@ -127,12 +119,12 @@ const empNameShow = document.getElementById("empName-show");
 const empRoleShow = document.getElementById("empRole-show");
 const empEmailShow = document.getElementById("empEmail-show");
 const empPhoneShow = document.getElementById("empPhone-show");
-
 const previewImgShow = document.getElementById("previewImg-show");
 const containerExperienceShow = document.getElementById("container-experience-show");
 
 
-// Affichage complet d'un employé
+// Affichage employee
+
 function showEmployeeModal(employee) {
 
     modalShow.classList.remove("hidden"); 
@@ -160,7 +152,7 @@ console.log("here  ")
         });
     } else {
         containerExperienceShow.innerHTML =
-            `<p class="text-gray-500">No experience available</p>`;
+            `<p class="text-gray-500"> sans experience  available</p>`;
     }
     console.log("good by")
 }
@@ -170,10 +162,6 @@ document.getElementById("closeModal-show")
     .addEventListener("click", () => {
         modalShow.classList.add("hidden");
     });
-
-
-
-
  
 let localStaff = JSON.parse(localStorage.getItem("STAFF")) || [];
 renderStaffList(localStaff, unassignedList);

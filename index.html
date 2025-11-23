@@ -15,32 +15,30 @@
     <!-- container main -->
     <div class="flex flex-col lg:flex-row h-screen">
 
-      <!--   staff -->
-      <aside class="w-full lg:w-1/4 bg-white shadow-xl p-5 overflow-y-auto">
+      <aside class=" lg:w-1/4 bg-white shadow-xl p-5 overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-bold">Unassigned Staff</h2>
+          <h1 class=" font-bold">Unassigned Staff</h1>
           <button id="btn-open-modal"
             class="bg-blue-600 text-white px-3 py-1.5 rounded shadow ">
             <i class="ri-add-line text-lg"></i> Add
           </button>
         </div>
 
-        <!-- checher poste -->
+        <!-- checher  -->
         <input id="searchStaff"
           placeholder="Search by name or role..."
           class="w-full mb-4 p-2 rounded border" />
 
-        <!-- STAFF LIST -->
         <div id="unassignedList" class="space-y-3">
-          <!-- implementation par js -->
+          <!-- implemeentation par js -->
 
         </div>
       </aside>
 
-      <!-- RIGHT: FLOOR PLAN GRID -->
+      <!-- grid plan-->
       <main class="flex-1 p-6 overflow-y-auto">
 
-        <h1 class="text-2xl font-bold mb-5">Building Floor Plan</h1>
+        <h1 class="text-2xl font-bold mb-5">Rooms </h1>
 
         <div class="grid gap-5
                   xl:grid-cols-3 
@@ -276,7 +274,7 @@
       </button>
     </div>
     <div id="worker-preview" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-      <!-- employees will appear here -->
+      <!-- employees will be here -->
     </div>
   </div>
 </div>
