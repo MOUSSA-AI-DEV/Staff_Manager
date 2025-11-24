@@ -16,7 +16,6 @@ function saveRooms() {
 function updateZoneBackground(zone) {
     const container = document.querySelector(`[data-zone="${zone}"] [data-zone-list]`);
     const zoneDiv = container.closest(".zone");
-
     if (roomArrays[zone].length === 0) {
         zoneDiv.classList.add("bg-red-200");
     } else {
@@ -25,20 +24,19 @@ function updateZoneBackground(zone) {
 }
 
 const workerPopup = document.getElementById("worker-display-popup-room");
-const workeraffichage = document.getElementById("worker-preview");
+const worcker_preview = document.getElementById("worker-preview");
 const btn_close_affichage = document.getElementById("close-worker-popup-room");
 
 function canAccessZone(role, zone) {
     if (role === "Manager") return true;
-
+    // if (zone === "reception") return role === "Receptionist";
     if (zone === "server") return role === "IT Technician";
     if (zone === "security") return role === "Security Agent";
     if (zone === "archives") {
-        if (role === "Cleaning Staff") return false;    
+        if (role === "Cleaning Staff") return false;
         return role === "Archivist" || role === "Manager";
     }
     if (role === "Other") {
-
         return !["server", "security", "archives"].includes(zone);
     }
     if (role === "Cleaning Staff") {
@@ -47,8 +45,8 @@ function canAccessZone(role, zone) {
     return false;
 }
 
-function openWorkerPopupForZone(zoneName) {
-    workeraffichage.innerHTML = "";
+function openWorkerPopup(zoneName) {
+    worcker_preview.innerHTML = "";
     const staff = JSON.parse(localStorage.getItem("STAFF")) || [];
     const filtered = staff.filter(emp => canAccessZone(emp.empRole, zoneName));
 
@@ -60,7 +58,7 @@ function openWorkerPopupForZone(zoneName) {
             <strong>${emp.empName}</strong>
             <p class="text-sm text-gray-600">${emp.empRole}</p>
         `;
-        workeraffichage.appendChild(card);
+        worcker_preview.appendChild(card);
     });
 
     workerPopup.classList.remove("hidden");
@@ -74,7 +72,8 @@ btn_close_affichage.addEventListener("click", () => {
 
 
 
-workeraffichage.addEventListener("click", (e) => {
+worcker_preview.addEventListener("click", (e) => {
+    // get id of  card to pass and find it
     const card = e.target.closest("[data-id]");
     if (!card) return;
 
@@ -82,26 +81,22 @@ workeraffichage.addEventListener("click", (e) => {
     let staff = JSON.parse(localStorage.getItem("STAFF")) || [];
     const employee = staff.find(emp => emp.id === empId);
 
-// get zone by active class and get the name of data zone
-4
     const zoneName = document.querySelector(".zone.active")?.dataset.zone;
-    // if (!canAccessZone(employee.empRole, zoneName)) {
-    //     alert("Cet employé n'a pas accès à cette zone.");
-    //     return;
-    // }
+    if (!canAccessZone(employee.empRole, zoneName)) {
+        alert("Cet employé n'a pas accès à cette zone.");
+        return;
+    }
 
     const room = roomArrays[zoneName];
     if (room.length >= 5) {
-        alert("Cette a 5 personne.");
+        alert("Cette salle a déjà 5 employés.");
         return;
     }
 
     room.push(employee);
     saveRooms();
 
-// elimner empl from siz bare
-
-    staff = staff.filter(emp => emp.id !== empId);;
+    staff = staff.filter(emp => emp.id !== empId);
     localStorage.setItem("STAFF", JSON.stringify(staff));
 
     renderStaffList(staff, document.getElementById("unassignedList"));
@@ -114,7 +109,7 @@ function removeEmployeeFromRoom(zone, empId) {
     let staff = JSON.parse(localStorage.getItem("STAFF")) || [];
     const index = roomArrays[zone].findIndex(emp => emp.id === empId);
     if (index === -1) return;
-// array iin ,array
+
     const employee = roomArrays[zone][index];
     roomArrays[zone].splice(index, 1);
     saveRooms();
@@ -128,8 +123,8 @@ function removeEmployeeFromRoom(zone, empId) {
 }
 
 export function renderRooms() {
+    // get zones 
     Object.keys(roomArrays).forEach(zone => {
-        // container if list
         const container = document.querySelector(`[data-zone="${zone}"] [data-zone-list]`);
         const zoneDiv = container.closest(".zone");
         container.innerHTML = "";
@@ -139,7 +134,7 @@ export function renderRooms() {
         } else {
             zoneDiv.classList.remove("bg-red-200");
         }
-
+// loop pour dustibier les employees
         roomArrays[zone].forEach(emp => {
             const empDiv = document.createElement("div");
             empDiv.className = "flex justify-between items-center p-2 bg-gray-100 rounded";
@@ -186,9 +181,9 @@ export function assigne() {
     roomButtons.forEach(btn => {
         btn.addEventListener("click", () => {
             const zoneName = btn.closest(".zone").dataset.zone;
-            document.querySelectorAll(".zone").forEach(zone => zone.classList.remove("active"));
+            document.querySelectorAll(".zone").forEach(z => z.classList.remove("active"));
             btn.closest(".zone").classList.add("active");
-            openWorkerPopupForZone(zoneName);
+            openWorkerPopup(zoneName);
         });
     });
 

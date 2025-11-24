@@ -32,6 +32,7 @@ const unassignedList = document.getElementById("unassignedList");
 
 function validateForm() {
     let isValid = true;
+
     for (const field in validationRules) {
         if (field === "empPhoto") continue; 
         const input = document.getElementById(field);
@@ -81,6 +82,7 @@ saveEmployee.addEventListener("click", () => {
     console.log("jjjjj");
   
 console.log("dfghjk")
+   
     if (!validateForm()) return;
     let Employee = {
         id : new Date().getTime().toString()

@@ -42,6 +42,7 @@ function toggleError(field, show, message = '') {
 function validateField(field, value) {
 
     const rule = validationRules[field];
+    
 
     if (rule && !rule.regex.test(value)) {
         toggleError(field, true, rule.message);
