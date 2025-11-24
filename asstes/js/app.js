@@ -1,4 +1,4 @@
-import { renderStaffList, DeleteEmployee, STAFF,renderexperince } from "./crud.js";
+import { renderStaffList, DeleteEmployee, STAFF,renderexperince } from "../js/crud.js";
 // import { renderWorkerModal } from "./affiche_worker.js";
 import {  validationRules, validateField   } from "./validatField.js"
 import { assigne, renderRooms } from "./assign_employee.js";

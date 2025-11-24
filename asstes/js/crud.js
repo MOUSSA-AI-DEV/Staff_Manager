@@ -1,4 +1,4 @@
-import { arrayexpList,showEmployeeModal } from "./app.js";
+import { arrayexpList,showEmployeeModal } from "../js/app.js";
 
 
 let STAFF = JSON.parse(localStorage.getItem("STAFF")) || [];
