@@ -19,10 +19,7 @@ const previewImg = document.getElementById("previewImg");
 const inputs = [empName, empRole, empEmail, empPhone, ];
 
 
-const companyName = document.getElementById("companyName");
-const role = document.getElementById("role");
-const fromDate = document.getElementById("fromDate");
-const toDate = document.getElementById("toDate");
+
 
 
 const containerExperience = document.getElementById("container-experience")

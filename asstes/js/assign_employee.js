@@ -16,6 +16,7 @@ function saveRooms() {
 function updateZoneBackground(zone) {
     const container = document.querySelector(`[data-zone="${zone}"] [data-zone-list]`);
     const zoneDiv = container.closest(".zone");
+   
     if (roomArrays[zone].length === 0) {
         zoneDiv.classList.add("bg-red-200");
     } else {
@@ -49,6 +50,7 @@ function openWorkerPopup(zoneName) {
     worcker_preview.innerHTML = "";
     const staff = JSON.parse(localStorage.getItem("STAFF")) || [];
     const filtered = staff.filter(emp => canAccessZone(emp.empRole, zoneName));
+    
 
     filtered.forEach(emp => {
         const card = document.createElement("div");
@@ -128,10 +130,11 @@ export function renderRooms() {
         const container = document.querySelector(`[data-zone="${zone}"] [data-zone-list]`);
         const zoneDiv = container.closest(".zone");
         container.innerHTML = "";
-
+       
         if (roomArrays[zone].length === 0) {
             zoneDiv.classList.add("bg-red-200");
-        } else {
+        }
+        else {
             zoneDiv.classList.remove("bg-red-200");
         }
 // loop pour dustibier les employees
@@ -156,8 +159,9 @@ export function renderRooms() {
 
 function addEmployeeToRoom(zone, employee) {
     const container = document.querySelector(`[data-zone="${zone}"] [data-zone-list]`);
-
     const empDiv = document.createElement("div");
+    const zoneDiv = container.closest(".zone");
+    
     empDiv.className = "flex justify-between items-center p-2 bg-gray-100 rounded";
     empDiv.dataset.id = employee.id;
 
@@ -172,6 +176,7 @@ function addEmployeeToRoom(zone, employee) {
     });
 
     container.appendChild(empDiv);
+
     updateZoneBackground(zone);
 }
 
@@ -187,5 +192,5 @@ export function assigne() {
         });
     });
 
-    renderRooms();
+    // renderRooms();
 }
