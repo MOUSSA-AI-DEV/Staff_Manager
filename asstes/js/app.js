@@ -1,4 +1,4 @@
-import { renderStaffList, DeleteEmployee, STAFF,renderexperince } from ".crud.js";
+import { renderStaffList, DeleteEmployee, STAFF,renderexperince } from "./crud.js";
 import {  validationRules, validateField   } from "./validatField.js"
 import { assigne, renderRooms } from "./assign_employee.js";
 
@@ -15,7 +15,7 @@ const empPhone = document.getElementById("empPhone");
 const empPhoto = document.getElementById("empPhoto");
 const previewImg = document.getElementById("previewImg");
 
-const inputs = [empName, empRole, empEmail, empPhone, ];
+const inputs = [empName, empRole, empEmail, empPhone ];
 
 
 
