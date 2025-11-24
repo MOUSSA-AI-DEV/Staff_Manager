@@ -1,6 +1,6 @@
 import { renderStaffList, DeleteEmployee, STAFF,renderexperince } from "../js/crud.js";
-import {  validationRules, validateField   } from "./validatField.js"
-import { assigne, renderRooms } from "./assign_employee.js";
+import {  validationRules, validateField   } from "../js/validatField.js"
+import { assigne, renderRooms } from "../js/assign_employee.js";
 
 export let arrayexpList = []
 const addBtn = document.getElementById("btn-open-modal");

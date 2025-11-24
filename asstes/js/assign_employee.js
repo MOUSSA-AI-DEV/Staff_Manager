@@ -1,5 +1,5 @@
 
-import { renderStaffList } from "/asstes/js/crud.js";
+import { renderStaffList } from "../js/crud.js";
 export const roomArrays = JSON.parse(localStorage.getItem("ROOMS")) || {
     conference: [],
     reception: [],
@@ -192,5 +192,5 @@ export function assigne() {
         });
     });
 
-    // renderRooms();
+    renderRooms();
 }
